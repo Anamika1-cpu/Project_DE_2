@@ -1,51 +1,92 @@
-# Customer Transaction Data Pipeline – Spark, Delta Lake & ScyllaDB (Dockerized)
+<div align="center">
+
+# 🚀 End-to-End Data Engineering Pipeline
+
+### Apache Airflow · Apache Spark · Delta Lake · ScyllaDB · Docker
+
+![Apache Airflow](https://img.shields.io/badge/Apache%20Airflow-2.8.0-017CEE?style=for-the-badge&logo=apacheairflow&logoColor=white)
+![Apache Spark](https://img.shields.io/badge/Apache%20Spark-3.5.0-E25A1C?style=for-the-badge&logo=apachespark&logoColor=white)
+![Delta Lake](https://img.shields.io/badge/Delta%20Lake-3.2.0-003366?style=for-the-badge&logo=delta&logoColor=white)
+![ScyllaDB](https://img.shields.io/badge/ScyllaDB-NoSQL-53CADD?style=for-the-badge&logo=scylladb&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3.10-3776AB?style=for-the-badge&logo=python&logoColor=white)
+
+<br/>
+
+> A **production-grade batch data pipeline** simulating a real-world customer transaction processing system — built with distributed computing, ACID-compliant storage, and fully containerized microservices.
+
+</div>
+
+---
 
 ## 📌 Project Overview
 
-This repository implements an end-to-end data engineering pipeline using **Apache Spark**, **Delta Lake**, **ScyllaDB**, and **Apache Airflow**, fully containerized with Docker.
+This project demonstrates a **complete end-to-end Data Engineering pipeline** built using modern distributed technologies.
 
-The pipeline:
-- Reads raw transaction data from a CSV file
-- Cleans, validates, and transforms the data using Apache Spark
-- Stores processed data in Delta Lake format (ACID-compliant storage)
-- Aggregates daily customer totals
-- Loads aggregated results into ScyllaDB (Cassandra-compatible NoSQL database)
-- Orchestrates the workflow using Apache Airflow
+The pipeline simulates a real-world customer transaction processing system where:
 
-> This project was developed as part of a Data Engineering assignment focused on building a realistic, production-style batch data pipeline.
+- 📥 Raw transaction data is **ingested** from CSV
+- ⚡ Data is **transformed and aggregated** using Apache Spark
+- 🏔️ Data is **stored in Delta Lake** format (ACID-compliant)
+- 📦 Aggregated results are **loaded into ScyllaDB** (Cassandra-compatible NoSQL)
+- 🔁 The entire workflow is **orchestrated using Apache Airflow**
+- 🐳 Everything runs in **isolated Docker containers**
+
+This project showcases real-world Data Engineering concepts including distributed processing, orchestration, Delta Lake architecture, serving layer design, and containerized microservices.
 
 ---
 
-## 🛠 Tech Stack
+## 🏗️ Architecture
 
-| Technology | Version | Purpose |
+```
+┌─────────────────────────┐
+│     transactions.csv    │   ← Raw Source Data
+└────────────┬────────────┘
+             │
+             ▼
+┌─────────────────────────┐
+│      Apache Spark       │   ← Distributed ETL Processing
+│     (ETL Processing)    │
+└────────────┬────────────┘
+             │
+             ▼
+┌─────────────────────────┐
+│       Delta Lake        │   ← ACID-Compliant Storage Layer
+│     (ACID Storage)      │
+└────────────┬────────────┘
+             │
+             ▼
+┌─────────────────────────┐
+│      Aggregation        │   ← Daily Customer Totals
+│    (Daily Totals)       │
+└────────────┬────────────┘
+             │
+             ▼
+┌─────────────────────────┐
+│       ScyllaDB          │   ← High-Performance Serving Layer
+│    (Serving Layer)      │
+└────────────┬────────────┘
+             │
+             ▼
+┌─────────────────────────┐
+│     Apache Airflow      │   ← Workflow Orchestration & Scheduling
+│    (Orchestration)      │
+└─────────────────────────┘
+```
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology | Version |
 |---|---|---|
-| Apache Spark (PySpark) | 3.5.0 | Data processing & transformations |
-| Delta Lake | 3.2.0 | ACID-compliant storage layer |
-| ScyllaDB | Latest | High-performance NoSQL serving layer |
-| Apache Airflow | 2.8.0 | Workflow orchestration |
-| Docker & Docker Compose | — | Containerized environment |
-| Python | 3.10 | ETL implementation |
-
----
-
-## 🏗 Architecture
-
-```
-transactions.csv
-      ↓
-Apache Spark (Data Cleaning & Aggregation)
-      ↓
-Delta Lake (ACID Storage Layer)
-      ↓
-Daily Customer Aggregation
-      ↓
-ScyllaDB (Serving Layer)
-      ↓
-Apache Airflow (Orchestration)
-```
-
-All services (Airflow, Spark, ScyllaDB) run inside Docker containers.
+| 🔁 Orchestration | Apache Airflow | 2.8.0 |
+| ⚡ Processing | Apache Spark (PySpark) | 3.5.0 |
+| 🏔️ Storage | Delta Lake | 3.2.0 |
+| 📦 Serving Layer | ScyllaDB | Latest |
+| 🐳 Containerization | Docker + Docker Compose | — |
+| 🐍 Language | Python | 3.10 |
+| 🔨 Build Strategy | Multi-stage Docker Build | — |
 
 ---
 
@@ -53,71 +94,72 @@ All services (Airflow, Spark, ScyllaDB) run inside Docker containers.
 
 ```
 customer-transaction-pipeline/
-├── airflow/
-│   └── dags/
-│       └── etl_pipeline_dag.py
-├── spark/
-│   └── etl_job.py
-├── scylla/
-│   └── init.cql
-├── data/
-│   └── transactions.csv
-├── Dockerfile.airflow
-├── docker-compose.yml
-└── README.md
+│
+├── 📁 airflow/
+│   └── 📁 dags/
+│       └── 📄 etl_pipeline_dag.py       # Airflow DAG definition
+│
+├── 📁 spark/
+│   └── 📄 etl_job.py                    # PySpark ETL job
+│
+├── 📁 scylla/
+│   └── 📄 init.cql                      # ScyllaDB schema initialization
+│
+├── 📁 data/
+│   └── 📄 transactions.csv              # Raw input dataset
+│
+├── 📄 Dockerfile.airflow                # Multi-stage Docker build
+├── 📄 docker-compose.yml                # Service orchestration
+└── 📄 README.md
 ```
 
 ---
 
-## 🧪 Input Dataset
+## 🔄 Pipeline Workflow
 
-The pipeline processes a transaction dataset with the following schema:
+### 1️⃣ Data Ingestion
 
-| Field | Description |
-|---|---|
-| `transaction_id` | Unique transaction identifier |
-| `customer_id` | Customer identifier |
-| `timestamp` | Transaction timestamp |
-| `amount` | Transaction amount |
+Reads `transactions.csv` using Spark's DataFrame API with schema inference:
+
+```python
+df_raw = spark.read.csv(
+    "/opt/airflow/data/transactions.csv",
+    header=True,
+    inferSchema=True
+)
+```
 
 **Dataset characteristics:**
 - 1000+ transaction records
-- Duplicate transaction IDs
-- Invalid or negative transaction amounts
+- Duplicate `transaction_id` values
+- Invalid / negative amounts
 - Mixed timestamp formats
-- Potential dirty records
-
-This simulates real-world transactional financial data.
+- Simulates real-world dirty financial data
 
 ---
 
-## 🔍 Data Cleaning & Transformations (Spark)
+### 2️⃣ Data Cleaning & Transformation
 
-### Data Quality Checks
-- Removed duplicate records based on `transaction_id`
-- Filtered out transactions where `amount <= 0`
-- Explicit date parsing from `timestamp`
+**Quality checks applied:**
+- Removed duplicates based on `transaction_id`
+- Filtered out records where `amount <= 0`
+- Parsed and standardized `timestamp` → `transaction_date`
 - Enforced schema validation
 
-### Transformations
-- Extracted `transaction_date` from `timestamp`
-- Aggregated total daily spend per customer
-- Ensured numeric consistency before storage
-- Converted aggregated values to `double` for ScyllaDB compatibility
+**Aggregation** — groups transactions per customer per day:
 
-### Aggregation Logic
-
-Grouped by `customer_id` and `transaction_date`, computing:
-
+```python
+result = df_raw.groupBy("customer_id", "transaction_date") \
+    .agg(sum("amount").alias("daily_total"))
 ```
-daily_total = SUM(amount)
-```
+
+> Simulates financial daily reporting use cases.
 
 ---
 
-## 🗄 Delta Lake Storage
+### 3️⃣ Delta Lake Storage
 
-Processed data is written in Delta format:
+Processed data is persisted in Delta format:
 
 ```python
 result.write \
@@ -127,15 +169,93 @@ result.write \
 ```
 
 **Why Delta Lake?**
-- ACID transactions
-- Schema enforcement
-- Reliable batch writes
-- Prevents partial failures
-- Production-grade storage layer
+
+| Feature | Benefit |
+|---|---|
+| ACID Transactions | Prevents partial failures |
+| Schema Enforcement | Ensures data consistency |
+| Time Travel | Historical data access |
+| Batch & Streaming | Unified processing support |
 
 ---
 
-## 🗄 Database Design (ScyllaDB)
+### 4️⃣ Loading into ScyllaDB (Serving Layer)
+
+Aggregated records are inserted into ScyllaDB for low-latency querying:
+
+```python
+cluster = Cluster(["scylla"])
+session = cluster.connect("finance")
+
+for row in result.collect():
+    session.execute("""
+        INSERT INTO daily_customer_totals
+        (customer_id, transaction_date, daily_total)
+        VALUES (%s, %s, %s)
+    """, (row.customer_id, row.transaction_date, float(row.daily_total)))
+```
+
+**Why ScyllaDB?**
+
+| Feature | Benefit |
+|---|---|
+| High Throughput | Millions of writes/sec |
+| Low Latency | Sub-millisecond reads |
+| Cassandra-Compatible | Easy driver integration |
+| Serving Layer Ready | Optimized for dashboards & APIs |
+
+---
+
+### 5️⃣ Orchestration with Apache Airflow
+
+The Airflow DAG triggers the Spark job via a `BashOperator`:
+
+```python
+run_spark_etl = BashOperator(
+    task_id="run_spark_etl",
+    bash_command="spark-submit /opt/airflow/spark/etl_job.py"
+)
+```
+
+**Airflow features leveraged:**
+- ✅ Task retry handling
+- ✅ Real-time monitoring
+- ✅ Structured logging
+- ✅ Cron-based scheduling support
+
+---
+
+## 🐳 Dockerized Setup
+
+### Multi-Stage Docker Build
+
+```dockerfile
+# Stage 1 — Spark base
+FROM apache/spark:3.5.0 AS spark_stage
+
+# Stage 2 — Airflow with Spark embedded
+FROM apache/airflow:2.8.0-python3.10
+
+RUN apt-get update && \
+    apt-get install -y default-jdk curl && \
+    apt-get clean
+
+COPY --from=spark_stage /opt/spark /opt/spark
+
+ENV PATH="/opt/spark/bin:${PATH}"
+```
+
+### Docker Compose Services
+
+| Service | Role |
+|---|---|
+| `airflow_webserver` | Airflow UI on port 8080 |
+| `airflow_scheduler` | DAG scheduling |
+| `scylla` | ScyllaDB NoSQL instance |
+
+---
+
+## 🗄️ Database Schema
 
 ### Keyspace
 
@@ -155,66 +275,45 @@ CREATE TABLE finance.daily_customer_totals (
 );
 ```
 
-### Design Rationale
+**Partitioning strategy:**
 
-| Key | Column | Rationale |
+| Key | Column | Purpose |
 |---|---|---|
 | Partition Key | `customer_id` | Fast per-customer lookups |
-| Clustering Column | `transaction_date` | Time-series style queries |
-
-Optimized for daily reporting workloads and per-customer time-series queries.
+| Clustering Column | `transaction_date` | Efficient time-series queries |
 
 ---
 
-## 📊 Row Count Explanation
+## 📊 Row Count Breakdown
 
 | Stage | Record Count |
 |---|---|
 | Raw transactions | ~1000 |
 | After deduplication | Reduced |
-| After invalid amount filtering | Reduced |
+| After invalid amount filtering | Reduced further |
 | Final aggregated rows | Significantly lower |
 
-**Why rows were reduced:**
-- Duplicate `transaction_id` values removed
-- Invalid or negative amounts filtered out
-- Aggregation reduces row count by grouping transactions
-
-This reduction demonstrates effective data quality enforcement and proper aggregation logic.
+> Row reduction validates correct deduplication, filtering, and aggregation logic — a sign of a healthy, well-enforced pipeline.
 
 ---
 
-## 🚀 How to Run the Pipeline
+## ▶️ How to Run
 
-### 1️⃣ Build and Start Containers
-
-```bash
-docker compose up --build
-```
-
-Ensure the following containers are running:
-- `airflow_webserver`
-- `airflow_scheduler`
-- `scylla`
-
-### 2️⃣ Open Airflow UI
-
-Navigate to [http://localhost:8080](http://localhost:8080)
-
-- Enable DAG: `customer_transaction_pipeline`
-- Trigger manually
-
-### 3️⃣ Spark Job Execution
-
-The DAG runs the following command:
+### Step 1 — Build & Start Containers
 
 ```bash
-spark-submit /opt/airflow/spark/etl_job.py
+docker-compose up --build
 ```
 
-Spark processes data and loads results into ScyllaDB.
+### Step 2 — Open Airflow UI
 
-### 4️⃣ Verify Data in ScyllaDB
+```
+http://localhost:8080
+```
+
+Enable the DAG `customer_transaction_pipeline` and trigger it manually.
+
+### Step 3 — Validate Results in ScyllaDB
 
 ```bash
 docker exec -it scylla cqlsh
@@ -227,53 +326,75 @@ SELECT * FROM daily_customer_totals LIMIT 10;
 
 ---
 
+## ✅ Key Features Implemented
+
+| Feature | Status |
+|---|---|
+| End-to-End Pipeline | ✅ |
+| Spark-based Aggregation | ✅ |
+| Delta Lake ACID Storage | ✅ |
+| NoSQL Serving Layer | ✅ |
+| Airflow Orchestration | ✅ |
+| Dockerized Microservices | ✅ |
+| Error Handling in ETL | ✅ |
+| Modular Project Structure | ✅ |
+
+---
+
+## 🧠 Concepts Demonstrated
+
+- Distributed Processing at scale
+- Data Lakehouse Architecture (Delta Lake)
+- ETL vs ELT design patterns
+- Serving Layer Design for low-latency access
+- Workflow Orchestration with dependency management
+- Container Networking across services
+- Microservices-based Data Stack
+
+---
+
 ## 🧯 Error Handling & Logging
 
-- Spark logs record counts at major stages
-- Exceptions handled during ScyllaDB insertion
-- Safe shutdown of Cassandra cluster connection
-- Airflow task retries enabled
-- Delta dependency conflicts resolved during setup
-- Permission issues fixed via proper container ownership
+- Spark logs record counts at each major stage
+- Exceptions caught and handled during ScyllaDB writes
+- Safe shutdown of Cassandra cluster connections
+- Airflow task retries configured
+- Delta dependency conflicts resolved at build time
+- Docker volume permissions correctly set
 
 ---
 
-## 🧠 Key Learnings
+## 🚀 Possible Enhancements
 
-- Spark + Delta version compatibility is critical
-- Missing Delta JARs cause runtime failures
-- Spark container and Airflow container must share a consistent environment
-- Cassandra drivers must be installed in the correct container
-- Docker networking impacts database connectivity
-- Writing to local file systems inside containers requires correct permissions
-
----
-
-## ⚡ Challenges Solved During Development
-
-- Delta Lake dependency mismatch
-- Scala version conflicts
-- Missing `delta-storage` JAR
-- Cassandra driver installation errors
-- Docker container permission issues
-- Keyspace connection failures
-- Volume path inconsistencies
-
----
-
-## 🔮 Possible Improvements
-
-- Incremental loads instead of full overwrite
-- Streaming ingestion
-- Partitioned Delta tables
-- Metrics monitoring with Prometheus integration
-- Cloud deployment (AWS / Azure)
-- Data quality validation framework integration
+- [ ] Incremental data loads with Change Data Capture (CDC)
+- [ ] Real-time streaming ingestion (Kafka + Spark Structured Streaming)
+- [ ] Partitioned Delta tables for performance at scale
+- [ ] Data quality framework (Great Expectations)
+- [ ] CI/CD integration (GitHub Actions)
+- [ ] Monitoring with Prometheus + Grafana
+- [ ] Cloud deployment on AWS / Azure
 
 ---
 
 ## 👩‍💻 Author
 
-**Anamika Gour**  
-Azure Data Engineer  
-*Passionate about building scalable data systems*
+<div align="center">
+
+**Anamika Gour**
+*Azure Data Engineer*
+
+Passionate about building scalable, production-grade Data Engineering systems.
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com)
+
+</div>
+
+---
+
+<div align="center">
+
+### ⭐ If you found this project useful, please star the repository!
+
+*Contributions, feedback, and collaboration are always welcome.*
+
+</div>
