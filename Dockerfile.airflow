@@ -1,0 +1,31 @@
+# Stage 1 — Get Spark
+FROM apache/spark:3.5.0 as spark_stage
+
+# Stage 2 — Airflow Base
+FROM apache/airflow:2.8.0-python3.10
+
+USER root
+
+RUN apt-get update && \
+    apt-get install -y default-jdk curl && \
+    apt-get clean
+
+RUN pip install cassandra-driver
+
+COPY --from=spark_stage /opt/spark /opt/spark
+
+RUN curl -L \
+https://repo1.maven.org/maven2/io/delta/delta-spark_2.12/3.2.0/delta-spark_2.12-3.2.0.jar \
+-o /opt/spark/jars/delta-spark_2.12-3.2.0.jar
+
+RUN curl -L \
+https://repo1.maven.org/maven2/io/delta/delta-storage/3.2.0/delta-storage-3.2.0.jar \
+-o /opt/spark/jars/delta-storage-3.2.0.jar
+
+ENV PATH="/opt/spark/bin:${PATH}"
+
+
+RUN mkdir -p /opt/airflow/data && \
+    chown -R airflow: /opt/airflow/data
+
+USER airflow
